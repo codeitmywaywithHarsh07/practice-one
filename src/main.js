@@ -49,7 +49,13 @@ app.on('window-all-closed', () => {
   }
 });
 
-autoUpdater.on('update-available', () => {
+// Auto-updater event listeners with detailed logging.
+autoUpdater.on('checking-for-update', () => {
+  console.log('Checking for update...');
+});
+
+autoUpdater.on('update-available', (info) => {
+  console.log('Update available:', info);
   dialog.showMessageBox({
     type: 'info',
     title: 'Update available',
@@ -57,7 +63,26 @@ autoUpdater.on('update-available', () => {
   });
 });
 
-autoUpdater.on('update-downloaded', () => {
+autoUpdater.on('update-not-available', (info) => {
+  console.log('Update not available:', info);
+});
+
+autoUpdater.on('error', (err) => {
+  console.error('Error in auto-updater:', err);
+  dialog.showMessageBox({
+    type: 'error',
+    title: 'Update error',
+    message: 'Error while checking for updates.',
+  });
+});
+
+autoUpdater.on('download-progress', (progressObj) => {
+  let logMessage = `Download speed: ${progressObj.bytesPerSecond} - Downloaded ${progressObj.percent}% (${progressObj.transferred}/${progressObj.total})`;
+  console.log(logMessage);
+});
+
+autoUpdater.on('update-downloaded', (info) => {
+  console.log('Update downloaded:', info);
   dialog.showMessageBox({
     type: 'info',
     title: 'Update ready',
