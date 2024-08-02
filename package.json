@@ -1,7 +1,7 @@
 {
   "name": "practice-1",
   "productName": "practice-1",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "My Electron application description",
   "main": ".webpack/main",
   "scripts": {
@@ -12,13 +12,32 @@
     "lint": "echo \"No linting configured\""
   },
   "build": {
+    "appId": "com.harshapp.practice1",
+    "productName": "practice-1",
+    "directories": {
+      "output": "out"
+    },
     "publish": [
-      { 
+      {
         "provider": "github",
         "owner": "codeitmywaywithHarsh07",
         "repo": "practice-one"
       }
-    ]
+    ],
+    "win": {
+      "target": [
+        "nsis"
+      ]
+    },
+    "mac": {
+      "target": "dmg"
+    },
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb"
+      ]
+    }
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
