@@ -11,6 +11,15 @@
     "publish": "electron-forge publish",
     "lint": "echo \"No linting configured\""
   },
+  "build": {
+    "publish": [
+      { 
+        "provider": "github",
+        "owner": "codeitmywaywithHarsh07",
+        "repo": "practice-one"
+      }
+    ]
+  },
   "devDependencies": {
     "@babel/core": "^7.25.2",
     "@babel/preset-react": "^7.24.7",
@@ -38,6 +47,7 @@
   "license": "MIT",
   "dependencies": {
     "electron-squirrel-startup": "^1.0.1",
+    "electron-updater": "^6.2.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   }

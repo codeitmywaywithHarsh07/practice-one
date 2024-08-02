@@ -1,4 +1,5 @@
-const { app, BrowserWindow } = require('electron');
+const { app, BrowserWindow, dialog } = require('electron');
+const { autoUpdater } = require('electron-updater');
 const path = require('node:path');
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
@@ -29,6 +30,7 @@ const createWindow = () => {
 app.whenReady().then(() => {
   createWindow();
 
+  autoUpdater.checkForUpdatesAndNotify();
   // On OS X it's common to re-create a window in the app when the
   // dock icon is clicked and there are no other windows open.
   app.on('activate', () => {
@@ -45,6 +47,27 @@ app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
     app.quit();
   }
+});
+
+autoUpdater.on('update-available', () => {
+  dialog.showMessageBox({
+    type: 'info',
+    title: 'Update available',
+    message: 'A new update is available. Downloading now...',
+  });
+});
+
+autoUpdater.on('update-downloaded', () => {
+  dialog.showMessageBox({
+    type: 'info',
+    title: 'Update ready',
+    message: 'A new update is ready. Quit and install now?',
+    buttons: ['Yes', 'Later'],
+  }).then((result) => {
+    if (result.response === 0) { // Runs the 'Yes' option
+      autoUpdater.quitAndInstall();
+    }
+  });
 });
 
 // In this file you can include the rest of your app's specific main process
