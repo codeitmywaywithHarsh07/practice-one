@@ -1,7 +1,7 @@
 {
   "name": "practice-1",
   "productName": "practice-1",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "My Electron application description",
   "main": ".webpack/main",
   "scripts": {
@@ -21,7 +21,8 @@
       {
         "provider": "github",
         "owner": "codeitmywaywithHarsh07",
-        "repo": "practice-one"
+        "repo": "practice-one",
+        "token": "${env.GITHUB_TOKEN}"
       }
     ],
     "win": {
@@ -65,6 +66,7 @@
   },
   "license": "MIT",
   "dependencies": {
+    "dotenv": "^16.4.5",
     "electron-squirrel-startup": "^1.0.1",
     "electron-updater": "^6.2.1",
     "react": "^18.3.1",

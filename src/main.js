@@ -1,6 +1,7 @@
 const { app, BrowserWindow, dialog } = require('electron');
 const { autoUpdater } = require('electron-updater');
 const path = require('node:path');
+require('dotenv').config();
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) {
@@ -68,7 +69,7 @@ autoUpdater.on('update-not-available', (info) => {
 });
 
 autoUpdater.on('error', (err) => {
-  console.error('Error in auto-updater:', err);
+  console.log('Error in auto-updater:', err);
   dialog.showMessageBox({
     type: 'error',
     title: 'Update error',
