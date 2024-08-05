@@ -35,10 +35,42 @@ const createWindow = () => {
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
-app.whenReady().then(() => {
+app.on('ready', () => {
   createWindow();
 
-  autoUpdater.checkForUpdatesAndNotify();
+  autoUpdater.setFeedURL({
+    provider: 'github',
+    owner: 'codeitmywaywithHarsh07',
+    repo: 'practice-one',
+    token: process.env.GITHUB_TOKEN
+  });
+
+  // Auto-updater event listeners with detailed logging.
+  autoUpdater.checkForUpdates();
+
+  autoUpdater.on('update-available', () => {
+    dialog.showMessageBox({
+      type: 'info',
+      title: 'Update available',
+      message: 'A new update is available. Downloading now...',
+      buttons: ['OK']
+    });
+  });
+
+  autoUpdater.on('update-downloaded', (event, releaseNotes, releaseName) => {
+    dialog.showMessageBox({
+      type: 'info',
+      title: 'Update ready',
+      message: 'A new update is ready. It will be installed now.',
+      buttons: ['OK']
+    }).then(() => {
+      setImmediate(() => autoUpdater.quitAndInstall());
+    });
+  });
+
+  autoUpdater.on('error', (error) => {
+    dialog.showErrorBox('Update error', `Error while checking for updates: ${error.message}`);
+  });
 });
 
 // Quit when all windows are closed, except on macOS. There, it's common
@@ -58,52 +90,3 @@ app.on('activate', () => {
   }
 });
 
-
-// Auto-updater event listeners with detailed logging.
-autoUpdater.on('checking-for-update', () => {
-  log.info('Checking for update...');
-});
-
-autoUpdater.on('update-available', (info) => {
-  log.info('Update available:', info);
-  dialog.showMessageBox({
-    type: 'info',
-    title: 'Update available',
-    message: 'A new update is available. Downloading now...',
-  });
-});
-
-autoUpdater.on('update-not-available', (info) => {
-  log.info('Update not available:', info);
-});
-
-autoUpdater.on('error', (err) => {
-  log.error('Error in auto-updater:', err);
-  dialog.showMessageBox({
-    type: 'error',
-    title: 'Update error',
-    message: 'Error while checking for updates: ' + (err == null ? "unknown" : (err.stack || err).toString()),
-  });
-});
-
-autoUpdater.on('download-progress', (progressObj) => {
-  let logMessage = `Download speed: ${progressObj.bytesPerSecond} - Downloaded ${progressObj.percent}% (${progressObj.transferred}/${progressObj.total})`;
-  log.info(logMessage);
-});
-
-autoUpdater.on('update-downloaded', (info) => {
-  log.info('Update downloaded:', info);
-  dialog.showMessageBox({
-    type: 'info',
-    title: 'Update ready',
-    message: 'A new update is ready. Quit and install now?',
-    buttons: ['Yes', 'Later'],
-  }).then((result) => {
-    if (result.response === 0) { // Runs the 'Yes' option
-      autoUpdater.quitAndInstall();
-    }
-  });
-});
-
-// In this file you can include the rest of your app's specific main process
-// code. You can also put them in separate files and import them here.
