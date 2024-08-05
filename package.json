@@ -15,7 +15,8 @@
     "appId": "com.harshapp.practice1",
     "productName": "practice-1",
     "directories": {
-      "output": "out"
+      "output": "out",
+      "buildResources": "build"
     },
     "publish": [
       {
@@ -23,6 +24,12 @@
         "owner": "codeitmywaywithHarsh07",
         "repo": "practice-one",
         "token": "${env.GITHUB_TOKEN}"
+      }
+    ],
+    "extraResources": [
+      {
+        "from": "resources/",
+        "to": "resources/"
       }
     ],
     "win": {
