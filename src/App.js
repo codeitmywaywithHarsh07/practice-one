@@ -14,7 +14,7 @@ function App() {
       Sint nesciunt laboriosam labore et culpa aliquam, ab velit delectus doloribus consequuntur maxime molestiae perferendis ea ex itaque autem provident, excepturi nisi recusandae incidunt architecto error saepe! Fugiat, sequi voluptatem.
       Ipsum maxime sapiente quibusdam. Dolores delectus accusamus, minima dolore ipsam perferendis maiores voluptatum labore aspernatur officiis quia ipsum illum iste rem quo consequatur esse. Rem, numquam autem! Impedit, nemo odio!
       Porro nam commodi recusandae, iure beatae dolorem error quo tenetur ad facilis inventore laborum quas illum nulla provident. Molestias nobis vitae laborum veritatis a? Sit ratione quam culpa vitae fuga!</p>
-      <h2>This is the version v1.0.4</h2>
+      <h2>This is the version v1.1.0</h2>
     </div>
   )
 }
