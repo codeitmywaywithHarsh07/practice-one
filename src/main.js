@@ -2,6 +2,13 @@ const { app, BrowserWindow, dialog } = require('electron');
 const { autoUpdater } = require('electron-updater');
 const path = require('node:path');
 require('dotenv').config();
+const log = require('electron-log');
+
+// Configure logging
+log.transports.file.level = 'info';
+autoUpdater.logger = log;
+autoUpdater.logger.transports.file.level = 'info';
+log.info('App starting...');
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) {
@@ -32,13 +39,6 @@ app.whenReady().then(() => {
   createWindow();
 
   autoUpdater.checkForUpdatesAndNotify();
-  // On OS X it's common to re-create a window in the app when the
-  // dock icon is clicked and there are no other windows open.
-  app.on('activate', () => {
-    if (BrowserWindow.getAllWindows().length === 0) {
-      createWindow();
-    }
-  });
 });
 
 // Quit when all windows are closed, except on macOS. There, it's common
@@ -50,13 +50,22 @@ app.on('window-all-closed', () => {
   }
 });
 
+// On OS X it's common to re-create a window in the app when the
+// dock icon is clicked and there are no other windows open.
+app.on('activate', () => {
+  if (BrowserWindow.getAllWindows().length === 0) {
+    createWindow();
+  }
+});
+
+
 // Auto-updater event listeners with detailed logging.
 autoUpdater.on('checking-for-update', () => {
-  console.log('Checking for update...');
+  log.info('Checking for update...');
 });
 
 autoUpdater.on('update-available', (info) => {
-  console.log('Update available:', info);
+  log.info('Update available:', info);
   dialog.showMessageBox({
     type: 'info',
     title: 'Update available',
@@ -65,25 +74,25 @@ autoUpdater.on('update-available', (info) => {
 });
 
 autoUpdater.on('update-not-available', (info) => {
-  console.log('Update not available:', info);
+  log.info('Update not available:', info);
 });
 
 autoUpdater.on('error', (err) => {
-  console.log('Error in auto-updater:', err);
+  log.error('Error in auto-updater:', err);
   dialog.showMessageBox({
     type: 'error',
     title: 'Update error',
-    message: 'Error while checking for updates.',
+    message: 'Error while checking for updates: ' + (err == null ? "unknown" : (err.stack || err).toString()),
   });
 });
 
 autoUpdater.on('download-progress', (progressObj) => {
   let logMessage = `Download speed: ${progressObj.bytesPerSecond} - Downloaded ${progressObj.percent}% (${progressObj.transferred}/${progressObj.total})`;
-  console.log(logMessage);
+  log.info(logMessage);
 });
 
 autoUpdater.on('update-downloaded', (info) => {
-  console.log('Update downloaded:', info);
+  log.info('Update downloaded:', info);
   dialog.showMessageBox({
     type: 'info',
     title: 'Update ready',

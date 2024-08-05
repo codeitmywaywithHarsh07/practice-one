@@ -1,7 +1,7 @@
 {
   "name": "practice-1",
   "productName": "practice-1",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "My Electron application description",
   "main": ".webpack/main",
   "scripts": {
@@ -67,6 +67,7 @@
   "license": "MIT",
   "dependencies": {
     "dotenv": "^16.4.5",
+    "electron-log": "^5.1.7",
     "electron-squirrel-startup": "^1.0.1",
     "electron-updater": "^6.2.1",
     "react": "^18.3.1",
